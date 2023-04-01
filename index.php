@@ -1,5 +1,48 @@
+<?php
+// Incluye el archivo de conexión a la base de datos y las funciones necesarias
+require_once 'conexion.php';
+require_once 'funciones.php';
+
+// Comprueba si el formulario ha sido enviado
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Obtiene los datos del formulario y los valida
+    $username = validar_campo($_POST['username']);
+    $password = validar_campo($_POST['email']);
+
+    // Realiza la consulta a la base de datos para comprobar si el usuario existe y es válido
+    $query = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
+    $result = mysqli_query($conn, $query);
+
+    // Comprueba si se encontró un usuario con las credenciales proporcionadas
+    if (mysqli_num_rows($result) === 1) {
+        // Obtiene los datos del usuario
+        $user = mysqli_fetch_assoc($result);
+
+        // Comprueba el tipo de usuario
+        if ($user['type'] === 'superadmin') {
+            // Si es un superadmin, redirige a usuarios.php y crea la cookie
+            setcookie('tipo_usuario', 'superadmin');
+            header('Location: usuarios.php');
+            exit;
+        } elseif ($user['type'] === 'autorizado') {
+            // Si es un usuario autorizado, redirige a articulos.php y crea la cookie
+            setcookie('tipo_usuario', 'autorizado');
+            header('Location: articulos.php');
+            exit;
+        } elseif ($user['type'] === 'registrado') {
+            // Si es un usuario registrado pero no autorizado, muestra un mensaje de error y no crea la cookie
+            echo 'Lo siento, no tienes permisos para acceder a esta aplicación.';
+        }
+    } else {
+        // Si no se encontró un usuario con las credenciales proporcionadas, muestra un mensaje de error y no crea la cookie
+        echo 'Lo siento, el usuario no está registrado.';
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,23 +50,22 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta http-equiv="refresh" content="30">
-    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
+    <link rel="stylesheet" href="/css/styles.css">
     <script src=""></script>
     <title></title>
 </head>
+
 <body>
-    <?php
-
-
-    ?>
-
+    <div id="formulario">
+        <img src="" alt="logo de inicio de la app" />
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+            <label>Nombre de usuario</label>
+            <input type="text" name="username" required>
+            <label>Contraseña</label>
+            <input type="email" name="email" required>
+            <input type="submit" name="submit" value="Acceder">
+        </form>
+    </div>
 </body>
 </html>
-
-Contiene el sistema de acceso a la aplicación mediante el nombre de usuario y su dirección de correo electrónico. En este fichero se deberá comprobar qué tipo de usuario es y permitir el acceso a la aplicación:
-o En caso de ser superadmin, mostrará su nombre y mostrará un enlace para acceder a usuarios.php
-o En caso de ser un usuario autorizado, mostrará su nombre y mostrará un enlace para acceder a articulos.php
-o En caso de ser un usuario registrado, pero no autorizado, mostrará su nombre e indicará que no tiene permisos para acceder.
-o En caso de que sea un usuario no registrado o se introduzcan unos datos incorrectos, indicará que el usuario no está registrado.
-o Almacenará en una cookie el tipo de usuario que ha intentado registrarse
