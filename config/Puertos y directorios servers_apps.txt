@@ -1,0 +1,103 @@
+#Puerto Apache
+localhost:8080
+
+##Directorio Apache
+/var/www/html
+
+#Puerto Nginx
+localhost:80
+
+## Directorio de Nginx
+usr/share/nginx/html/
+
+#Puerto Laravel
+php artisan serve --host 0.0.0.0 --port=8000
+se inicia el servidor integrado de laravel
+sino ver mas abajo
+
+## Directorio Laravel
+/var/www/html/nombre_app_site
+
+
+
+#Laravel sin su servidor integrado
+
+https://es.linux-console.net/?p=2205#gsc.tab=0
+
+Crea un archivo de configuración para Apache. Puedes hacer esto en cualquier directorio, pero es recomendable hacerlo en el directorio /etc/httpd/conf.d/ en la mayoría de las distribuciones Linux. Por ejemplo, podrías crear un archivo llamado laravel.conf.
+
+Crear el archivo 
+sudo nano /etc/httpd/conf.d/laravel.conf
+
+
+Dentro del archivo laravel.conf, agrega lo siguiente:
+
+php
+Copy code
+<VirtualHost *:80>
+    ServerName mylaravelapp.com (nombre de dominio o de la direccion ip que estes usando de servidor)
+    DocumentRoot /var/www/html/nombre_de_app/public
+
+    <Directory /var/www/html/nombre_de_app/public>
+        AllowOverride All
+    </Directory>
+</VirtualHost>
+Este ejemplo utiliza el puerto 80 y un nombre de dominio ficticio, "mylaravelapp.com". Debes reemplazar "mylaravelapp" con el nombre de tu aplicación Laravel y asegurarte de que la ruta al directorio público de tu proyecto Laravel sea correcta.
+
+Guarda el archivo laravel.conf y reinicia el servidor Apache para que los cambios surtan efecto:
+Copy code
+sudo systemctl restart httpd
+Una vez que hayas completado estos pasos, tu aplicación Laravel debería ser accesible desde el servidor web Apache en lugar de utilizar el servidor de desarrollo integrado de Laravel.
+
+
+Después de hacer este cambio, guarda el archivo laravel.conf y reinicia Apache para que los cambios surtan efecto:
+
+Copy code
+sudo systemctl restart httpd
+Luego podrás acceder a tu aplicación Laravel a través del puerto 8000 en lugar del puerto 80. Por ejemplo, si utilizas el nombre de dominio ficticio mylaravelapp.com como en el ejemplo anterior, podrías acceder a tu aplicación en http://mylaravelapp.com:8000.
+
+
+
+## Es posible ejecutar una aplicación Laravel en un servidor web como Nginx en lugar de utilizar el servidor de desarrollo integrado de Laravel. Para hacer esto, necesitarás crear un archivo de configuración para Nginx (un archivo .conf) que apunte a la carpeta pública de tu proyecto Laravel.
+
+Aquí te muestro los pasos para hacerlo:
+
+Crea un archivo de configuración para Nginx. Puedes hacer esto en cualquier directorio, pero es recomendable hacerlo en el directorio /etc/nginx/conf.d/ en la mayoría de las distribuciones Linux. Por ejemplo, podrías crear un archivo llamado laravel.conf.
+
+Dentro del archivo laravel.conf, agrega lo siguiente:
+
+perl
+Copy code
+server {
+    listen 80;
+    server_name mylaravelapp.com;
+    root /var/www/html/mylaravelapp/public;
+
+    index index.php index.html index.htm;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location ~ \.php$ {
+        include fastcgi_params;
+        fastcgi_pass unix:/run/php-fpm/php-fpm.sock;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+    }
+
+    location ~ /\.ht {
+        deny all;
+    }
+}
+Este ejemplo utiliza el puerto 80 y un nombre de dominio ficticio, "mylaravelapp.com". Debes reemplazar "mylaravelapp" con el nombre de tu aplicación Laravel y asegurarte de que la ruta al directorio público de tu proyecto Laravel sea correcta.
+
+Guarda el archivo laravel.conf y reinicia el servidor Nginx para que los cambios surtan efecto:
+Copy code
+sudo systemctl restart nginx
+Una vez que hayas completado estos pasos, tu aplicación Laravel debería ser accesible desde el servidor web Nginx en lugar de utilizar el servidor de desarrollo integrado de Laravel.
+
+
+
+
+
