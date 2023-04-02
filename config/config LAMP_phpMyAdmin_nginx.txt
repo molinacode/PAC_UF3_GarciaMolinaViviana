@@ -1,0 +1,120 @@
+#Instalar Apache
+yum -y install httpd
+systemctlrt httpd.service
+ystemctl enable httpd.service
+ 
+firewall-cmd --permanent --zone=public --add-service=http
+firewall-cmd --permanent --zone=public --add-service=https
+firewall-cmd --reload
+
+
+##Comando para detener Apache (arrancar cambiar por start)
+sudo systemctl stop httpd
+sudo systemctl start httpd
+
+
+##Cambiar puertos para evitar conflictos con Nginx
+sudo nano /etc/httpd/conf/httpd.conf
+Listen 80 a 8080
+
+http://localhost:8080
+
+##Si quieres instalar nginx
+yum install nginx        [On CentOS/RHEL]
+
+Una vez que se haya instalado nginx, inicie el servidor web y habilítelo para que se inicie en el arranque del sistema y luego verifique el estado con los siguientes comandos.
+
+systemctl start nginx
+systemctl enable nginx
+systemctl status nginx
+
+Para acceder a nginx desde una red pública, debe abrir un puerto 80 en el firewall de su sistema para recibir solicitudes externas como se muestra. Aqui le asignamos el puerto 80 (ojo, revisar la configuracion de apache si lo tenemos instalado)
+
+firewall-cmd --permanent --add-port=80/tcp
+firewall-cmd --reload 
+
+
+###Instalar MariaDB 
+  
+  sudo yum -y install mariadb-server mariadb
+  systemctl start mariadb.service
+  systemctl enable mariadb.service
+  sudo mysql_secure_installation
+  
+##Instalar php correctamente 
+			https://www.linuxcapable.com/how-to-install-php-on-centos-stream/
+			https://www.linuxcapable.com/es/cómo-instalar-php-en-centos-stream/
+
+ sudo yum -y install php
+ dnf module list php
+ sudo dnf module enable php:remi-8.2 -y
+ Apache (httpd) PHP:
+
+sudo dnf install php php-cli -y
+Nginx PHP:
+
+sudo dnf install php-fpm php-cli -y
+Una vez completada la instalación, ejecute el siguiente comando para verificar que PHP se haya instalado correctamente.
+
+php -v
+
+### Instalación de modulos php
+sudo dnf install php-cli php-fpm php-curl php-mysqlnd php-gd php-opcache php-zip php-intl php-common php-bcmath php-imagick php-xmlrpc php-json php-readline php-memcached php-redis php-mbstring php-apcu php-xml php-dom php-redis php-memcached php-memcache
+
+Puede ejecutar el siguiente comando en cualquier momento para ver los módulos cargados actualmente.
+
+php -m
+Se recomienda monitorear regularmente y eliminar cualquier módulo innecesario, ya que muchos módulos instalados pueden afectar negativamente el rendimiento del sistema.
+
+Si desea instalar la rama de desarrollo, puede usar el siguiente comando.
+
+sudo dnf install php-devel
+Para agregar herramientas de desarrollo adicionales, como herramientas de depuración, use el comando que se indica a continuación.
+
+sudo dnf install php-xdebug php-pcov
+
+
+ systemctl restart httpd.service // sytemctl restart nginx.service
+ 
+ ###configurar el usuario de Nginx para PHP-FPM
+Al instalar PHP-FPM en distribuciones como Debian/Ubuntu, el “www-datos” usuario se utiliza a menudo. Sin embargo, este no es el valor predeterminado para las instalaciones en la familia RHEL. Por defecto, el servicio PHP-FPM está configurado para ejecutarse bajo el "Apache" usuario, que no es adecuado para su uso con Nginx. Por lo tanto, es necesario hacer ajustes.
+
+Primero, abra el archivo de configuración (www.conf) con el siguiente comando.
+
+sudo nano /etc/php-fpm.d/www.conf
+Luego, sustituya el (Apache) usuario y grupo con el (Nginx) usuario y grupo.
+
+
+
+
+###Para sistemas que usan NGINX: ahora debe colocar su contenido en la ubicación que elija y editar el root configuration directive in the nginx archivo de configuración /etc/nginx/nginx.conf.
+ 
+ ###Para sistemas que utilizan el servidor HTTP Apache: ahora puede agregar contenido al directorio /var/www/html/.
+ cd /var/www
+ sudo chmod a+w html
+ sudo nano html/info.php    localhost/info.php
+			<?php
+ 				phpinfo();
+ 			?>
+
+systemctl restart httpd.service
+
+#Instalacion de phpMyAdmin
+sudo yum install phpMyAdmin
+sudo nano /etc/httpd/conf.d/phpMyAdmin.conf
+sudo nano /etc/phpMyAdmin/config.inc.php
+ 			$cfg['servers'][$i]['auth_type']  = 'http'; 			
+systemctl restart httpd.service
+
+
+
+#Instalar Compose y Laravel
+##Compose
+curl -sS https://getcomposer.org/installer | php
+mv composer.phar /usr/local/bin/composer
+chmod +x /usr/local/bin/composer
+
+##Laravel
+cd /var/www/html/
+###Esto decarga los archivos de laravel y crea el sitio de la app (nombre de la app es lo ultimo que nombramos en la linea de codigo)
+sudo composer create-project --prefer-dist laravel/laravel testsite 
