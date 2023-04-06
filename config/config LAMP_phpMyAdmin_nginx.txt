@@ -1,7 +1,7 @@
 #Instalar Apache
 yum -y install httpd
-systemctlrt httpd.service
-ystemctl enable httpd.service
+systemctl httpd.service
+systemctl enable httpd.service
  
 firewall-cmd --permanent --zone=public --add-service=http
 firewall-cmd --permanent --zone=public --add-service=https
