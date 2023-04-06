@@ -6,11 +6,11 @@ require_once 'funciones.php';
 // Comprueba si el formulario ha sido enviado
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Obtiene los datos del formulario y los valida
-    $username = validar_campo($_POST['username']);
-    $password = validar_campo($_POST['email']);
+    $nombre = validar_campo($_POST['user']);
+    $correo = validar_campo($_POST['email']);
 
     // Realiza la consulta a la base de datos para comprobar si el usuario existe y es válido
-    $query = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
+    $query = "SELECT * FROM users WHERE user = '$nombre' AND password = '$correo'";
     $result = mysqli_query($conn, $query);
 
     // Comprueba si se encontró un usuario con las credenciales proporcionadas
@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Obtiene los datos del usuario
         $user = mysqli_fetch_assoc($result);
 
-        // Comprueba el tipo de usuario
+       /* // Comprueba el tipo de usuario
         if ($user['type'] === 'superadmin') {
             // Si es un superadmin, redirige a usuarios.php y crea la cookie
             setcookie('tipo_usuario', 'superadmin');
@@ -36,8 +36,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         // Si no se encontró un usuario con las credenciales proporcionadas, muestra un mensaje de error y no crea la cookie
         echo 'Lo siento, el usuario no está registrado.';
+    */
     }
-}
+     // Utiliza switch para manejar diferentes tipos de usuario
+    switch ($user['type']) {
+        case 'superadmin':
+          // Si es un superadmin, redirige a usuarios.php
+            header('Location: usuarios.php');
+            exit;
+        case 'autorizado':
+          // Si es un usuario autorizado, redirige a articulos.php
+            header('Location: articulos.php');
+            exit;
+        case 'registrado':
+          // Si es un usuario registrado pero no autorizado, muestra un mensaje de error
+            echo 'Lo siento, no tienes permisos para acceder a esta aplicación.';
+            break;
+        default:
+          // Si el tipo de usuario no es reconocido, muestra un mensaje de error
+            echo 'Lo siento, el usuario no está registrado.';
+            break;
+    }
+    } else {
+      // Si no se encontró un usuario con las credenciales proporcionadas, muestra un mensaje de error
+        echo 'Lo siento, el usuario no está registrado.';
+    }
 ?>
 
 <!DOCTYPE html>
@@ -59,12 +82,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div id="formulario">
         <img src="" alt="logo de inicio de la app" />
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-            <label>Nombre de usuario</label>
-            <input type="text" name="username" required>
-            <label>Contraseña</label>
+            <label for="usuario">Nombre de usuario</label>
+            <input type="text" name="user" required>
+            <label for="email">Email</label>
             <input type="email" name="email" required>
             <input type="submit" name="submit" value="Acceder">
         </form>
     </div>
 </body>
-</html>
+</html>   
