@@ -3,10 +3,12 @@ CREATE TABLE User (
 UserID int PRIMARY KEY AUTO_INCREMENT,
 Name varchar(50) NOT NULL,
 Email varchar(100) NOT NULL,
+FullName varchar(100) NOT NULL,
 Password varchar(255) NOT NULL,
 Type varchar(20) NOT NULL
+Enabled bit NOT NULL
 );
-	-- Creación de la tabla Category
+-- Creación de la tabla Category
 CREATE TABLE Category (
 CategoryID int PRIMARY KEY,
 Name varchar(50) NOT NULL
@@ -26,12 +28,4 @@ FOREIGN KEY (CategoryID) REFERENCES Category(CategoryID)
 CREATE TABLE Setup (
 Authentication bit NOT NULL,
 SuperAdmin int NOT NULL
-);
-
--- Creación de la tabla User
-CREATE TABLE User (
-UserID int PRIMARY KEY,
-Email varchar(100) NOT NULL,
-FullName varchar(100) NOT NULL,
-Enabled bit NOT NULL
 );
