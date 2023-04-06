@@ -17,54 +17,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (mysqli_num_rows($result) === 1) {
         // Obtiene los datos del usuario
         $user = mysqli_fetch_assoc($result);
-
-       /* // Comprueba el tipo de usuario
-        if ($user['type'] === 'superadmin') {
-            // Si es un superadmin, redirige a usuarios.php y crea la cookie
-            setcookie('tipo_usuario', 'superadmin');
-            header('Location: usuarios.php');
-            exit;
-        } elseif ($user['type'] === 'autorizado') {
-            // Si es un usuario autorizado, redirige a articulos.php y crea la cookie
-            setcookie('tipo_usuario', 'autorizado');
-            header('Location: articulos.php');
-            exit;
-        } elseif ($user['type'] === 'registrado') {
-            // Si es un usuario registrado pero no autorizado, muestra un mensaje de error y no crea la cookie
-            echo 'Lo siento, no tienes permisos para acceder a esta aplicación.';
-        }
-    } else {
-        // Si no se encontró un usuario con las credenciales proporcionadas, muestra un mensaje de error y no crea la cookie
-        echo 'Lo siento, el usuario no está registrado.';
-    */
-    }
-     // Utiliza switch para manejar diferentes tipos de usuario
-    switch ($user['type']) {
-        case 'superadmin':
-          // Si es un superadmin, redirige a usuarios.php
-            header('Location: usuarios.php');
-            exit;
-        case 'autorizado':
-          // Si es un usuario autorizado, redirige a articulos.php
-            header('Location: articulos.php');
-            exit;
-        case 'registrado':
-          // Si es un usuario registrado pero no autorizado, muestra un mensaje de error
-            echo 'Lo siento, no tienes permisos para acceder a esta aplicación.';
-            break;
-        default:
-          // Si el tipo de usuario no es reconocido, muestra un mensaje de error
-            echo 'Lo siento, el usuario no está registrado.';
-            break;
+        setcookie("datos",$user,time()+500);
+        
+        // Utiliza switch para manejar diferentes tipos de usuario
+        switch ($user['type']) {
+            case 'superadmin':
+                // Si es un superadmin, redirige a usuarios.php
+                header('Location: usuarios.php');
+                exit;
+            case 'autorizado':
+            // Si es un usuario autorizado, redirige a articulos.php
+                header('Location: articulos.php');
+                exit;
+            case 'registrado':
+            // Si es un usuario registrado pero no autorizado, muestra un mensaje de error
+                echo 'Lo siento, no tienes permisos para acceder a esta aplicación.';
+                break;
+            default:
+                // Si el tipo de usuario no es reconocido, muestra un mensaje de error
+                echo 'Lo siento, el usuario no está registrado.';
+                break;
     }
     } else {
       // Si no se encontró un usuario con las credenciales proporcionadas, muestra un mensaje de error
         echo 'Lo siento, el usuario no está registrado.';
     }
+}
+
 ?>
 
 <!DOCTYPE html>
-<html lang="es"></html>
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
