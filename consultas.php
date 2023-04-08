@@ -5,11 +5,9 @@ function tipoUsuario($nombre, $correo){
     // Completar...
 }
 
-
 function esSuperadmin($nombre, $correo){
     // Completar...
 }
-
 
 function getPermisos() {
     

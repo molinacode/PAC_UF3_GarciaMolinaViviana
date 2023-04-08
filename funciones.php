@@ -10,18 +10,12 @@
             // Realiza la comprobación de si es el email y el user es válido
             // Retorna el campo limpio y validado
             return $campo;
-        }
-
-        function pintaCategorias($defecto) {
+        }        function pintaCategorias($defecto) {
             // Completar...	
         }
-        
-
-        function pintaTablaUsuarios(){
+                function pintaTablaUsuarios(){
             // Completar...	
         }
-
-            
         function pintaProductos($orden) {
             // Completar...	
         }

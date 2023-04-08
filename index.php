@@ -43,7 +43,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo 'Lo siento, el usuario no está registrado.';
     }
 }
-
 ?>
 
 <!DOCTYPE html>
