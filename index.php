@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div id="formulario">
         <img src="" alt="logo de inicio de la app" />
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+        <form method="post" action='<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>'>
             <label for="usuario">Nombre de usuario</label>
             <input type="text" name="user" required>
             <label for="email">Email</label>

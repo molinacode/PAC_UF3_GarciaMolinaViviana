@@ -1,3 +1,9 @@
+
+-- Creación de la tabla Category
+CREATE TABLE Category (
+CategoryID int PRIMARY KEY,
+Name varchar(50) NOT NULL
+);
 -- Creación de la tabla User
 CREATE TABLE User (
     UserID int PRIMARY KEY AUTO_INCREMENT,
@@ -10,13 +16,6 @@ CREATE TABLE User (
     AdminLevel int NOT NULL,
     CONSTRAINT FK_User_Category FOREIGN KEY (AdminLevel) REFERENCES Category(CategoryID)
 );
-
--- Creación de la tabla Category
-CREATE TABLE Category (
-CategoryID int PRIMARY KEY,
-Name varchar(50) NOT NULL
-);
-
 -- Creación de la tabla Product
 CREATE TABLE Product (
 ProductID int PRIMARY KEY,
