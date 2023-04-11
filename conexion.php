@@ -2,7 +2,7 @@
 function crearConexion (){
     $host = "localhost";
     $user = "root";
-    $password = "";
+    $password = "maneska";
     $baseDatos = "pac_entornos";
     $conexion = mysqli_connect($host,$user,$password,$baseDatos);
     return $conexion;

@@ -7,8 +7,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta http-equiv="refresh" content="30">
-    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
+    <link rel="stylesheet" href="./css/styles.css">
     <script src=""></script>
     <title>Usuarios</title>
 </head>
@@ -17,23 +17,20 @@
     <?php
     // Incluir los archivos necesarios
     include "funciones.php";
-    include "consultas.php";
-
-    if (getPermisos() == 1) {
-        echo "<a href='formUsuarios.php?anadir'>Añadir usuario</a>";
+    if (!isset($_COOKIE['datos']) or ($_COOKIE['datos'] != "superadmin")){
+        echo "No tienes permiso para estar aquí.";
+    }else{
+        if (isset($_GET['Cambiar'])){
+            cambiarPermisos();
+        }
     }
     ?>
+    <p> Los permisos actuales están a <span><?php echo getPermisos();?></span></p>
+    <form action="users.php" action="GET">
+        <p><input type="submit" name="Cambiar" value="Cambiar Permisos"></p>
+    </form>
     <?php
-    if (!isset($_COOKIE['datos']) or ($_COOKIE['datos'] != "autorizado")) {
-        echo "No tienes permiso para estar aquí.";
-    } else { 
-        if (!isset($_GET["orden"])) {
-            $orden = "ID"; // orden por defecto
-        } else {
-            $orden = $_GET["orden"]; // obtener el orden seleccionado por el usuario
-        }
-        pintaTablaUsuarios($orden);
-    }
+        pintaTablaUsuarios();
     ?>
     <a href="index.php">Volver a la página principal</a>
 </body>
