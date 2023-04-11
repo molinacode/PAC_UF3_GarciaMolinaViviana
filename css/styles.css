@@ -1,17 +1,23 @@
 table {
     border-collapse: collapse;
 }
-td, th {
+
+td,
+th {
     border: 1px solid black;
     padding: 5px;
 }
+
 .autorizado {
     background-color: lightgreen;
 }
+
 /* Estilos generales */
 body {
     font-family: Arial, sans-serif;
     background-color: #f7f7f7;
+    margin: 0;
+    padding: 0;
     color: #333;
 }
 
@@ -62,7 +68,7 @@ input[type="submit"]:hover {
         max-width: 100%;
         padding: 10px;
     }
-    
+
     input[type="text"],
     input[type="email"],
     input[type="password"],
@@ -70,4 +76,120 @@ input[type="submit"]:hover {
         padding: 5px;
         margin-bottom: 5px;
     }
+}
+
+.shop {
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 72px;
+    font-weight: bold;
+    font-family: Arial, sans-serif;
+    text-transform: uppercase;
+}
+
+.shop span {
+    width: 80px;
+    height: 80px;
+    margin: 0 20px;
+    text-align: center;
+    line-height: 80px;
+    border-radius: 50%;
+    background-color: #0074D9;
+    /* Azul */
+    color: white;
+}
+
+.menu-toggle {
+    display: block;
+    width: 40px;
+    height: 32px;
+    margin: 20px;
+    position: relative;
+    cursor: pointer;
+}
+
+.menu-toggle span {
+    display: block;
+    position: absolute;
+    height: 4px;
+    width: 100%;
+    background: #333;
+    border-radius: 9px;
+    opacity: 1;
+    left: 0;
+    transform: rotate(0deg);
+    transition: all 0.25s ease-out;
+}
+
+.menu-toggle span:nth-child(1) {
+    top: 0px;
+}
+
+.menu-toggle span:nth-child(2),
+.menu-toggle span:nth-child(3) {
+    top: 14px;
+}
+
+.menu-toggle span:nth-child(4) {
+    top: 28px;
+}
+
+/* Estilos para el menú */
+.menu {
+    position: fixed;
+    top: 0;
+    left: -200px;
+    width: 200px;
+    height: 100%;
+    background-color: #333;
+    transition: all 0.3s ease-out;
+}
+
+.menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.menu li {
+    margin: 0;
+    padding: 0;
+}
+
+.menu a {
+    display: block;
+    padding: 10px 20px;
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.2s ease-out;
+}
+
+.menu a:hover {
+    background-color: #444;
+}
+
+/* Estilos para mostrar el menú */
+.menu-toggle.active span:nth-child(1) {
+    top: 16px;
+    transform: rotate(45deg);
+}
+
+.menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-toggle.active span:nth-child(3) {
+    top: 16px;
+    transform: rotate(-45deg);
+}
+
+.menu-toggle.active span:nth-child(4) {
+    top: 16px;
+    transform: rotate(135deg);
+}
+
+.menu-toggle.active~.menu {
+    left: 0;
 }
