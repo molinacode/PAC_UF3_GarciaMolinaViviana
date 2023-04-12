@@ -2,16 +2,7 @@
 
 include "consultas.php";
 
-function validar_campo($campo)
-{
-    // Limpia los datos recibidos
-    $campo = trim($campo);
-    $campo = stripslashes($campo);
-    $campo = htmlspecialchars($campo);
-    // Realiza la comprobación de si es el email y el user es válido
-    // Retorna el campo limpio y validado
-    return $campo;
-}
+
 function pintaCategorias($defecto)
 {
     $categorias = getCategorias();
@@ -25,7 +16,7 @@ function pintaTablaUsuarios()
     $usuarios = getListaUsuarios();
     echo "<table>";
     echo "<tr><th>Nombre Completo</th><th>Email</th><th>Autorizado</th></tr>";
-    while ($usuarios = mysqli_fetch_assoc($usuarios)) {
+    while ($usuario = mysqli_fetch_assoc($usuarios)) {
         echo '<tr><td>' . $usuario['full_name'] . '</td><td>' . $usuario['email'] . '</td><td>' . $usuario['enabled'] . '</td></tr>';
     }
     echo "</table>";

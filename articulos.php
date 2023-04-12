@@ -14,19 +14,6 @@
 </head>
 
 <body>
-    <div class="menu-toggle">
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
-    <nav class="menu">
-        <ul>
-            <li><a href="index.php">Inicio</a></li>
-            <li><a href="articulos.php">Artículos</a></li>
-            <li><a href="users.php">Usuarios</a></li>
-        </ul>
-    </nav>
-    <div class="content">
         <?php
         // Incluir los archivos necesarios
         include "funciones.php";
@@ -50,7 +37,5 @@
         }
         ?>
     <a href="index.php">Volver a la página principal</a>
-    </div>
-<script type="text/javascript" src="./js/script.js"></script>
 </body>
 </html>

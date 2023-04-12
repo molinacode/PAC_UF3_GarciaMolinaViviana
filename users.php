@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta http-equiv="refresh" content="30">
-    <link rel="icon" type="image/x-icon" href="./img/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="">
     <link rel="stylesheet" href="">
     <title>Usuarios</title>
 </head>
