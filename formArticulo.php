@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" type="image/x-icon" href="./img/favicon.ico">
-    <link rel="stylesheet" href="./css/styles.css">
+    <link rel="stylesheet" href="">
     <title>Añadir Artículo</title>
 </head>
 <body>
@@ -82,6 +82,6 @@
     </form>
     </div>
     <a href="articulos.php">Volver a la lista de artículos</a>
-    <script src="/js/script.js"></script>
+    
 </body>
 </html>

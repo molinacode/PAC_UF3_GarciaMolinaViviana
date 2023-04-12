@@ -9,32 +9,14 @@
     <meta name="author" content="">
     <meta http-equiv="refresh" content="30">
     <link rel="icon" type="image/x-icon" href="./img/favicon.ico">
-    <link rel="stylesheet" href="./css/styles.css">
+    <link rel="stylesheet" href="">
     <title>Inicio</title>
 </head>
 
 <body>
     <div id="formulario">
-        <div class="menu-toggle">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-        <nav class="menu">
-            <ul>
-                <li><a href="index.php">Inicio</a></li>
-                <li><a href="articulos.php">Artículos</a></li>
-                <li><a href="users.php">Usuarios</a></li>
-            </ul>
-        </nav>
         <div class="content">
             <h3>Inicio de sesión</h3>
-            <div class="shop">
-                <span>S</span>
-                <span>H</span>
-                <span>O</span>
-                <span>P</span>
-            </div>
             <form method="post" action="index.php">
                 <label for="usuario">Nombre de usuario</label>
                 <input type="text" name="user" required></br>
@@ -52,32 +34,48 @@
                 $nombre = validar_campo($_POST['user']);
                 $correo = validar_campo($_POST['email']);
                 setcookie("datos", $user, time() + 500);
+
                 // Utiliza switch para manejar diferentes tipos de usuario
-                switch ($user['type']) {
+                switch ($nombre) {
                     case 'superadmin':
                         // Si es un superadmin, redirige a usuarios.php
+                        setcookie("datos", $nombre, time() + 500);
                         header('Location: users.php');
                         exit;
                     case 'autorizado':
                         // Si es un usuario autorizado, redirige a articulos.php
+                        setcookie("datos", $nombre, time() + 500);
                         header('Location: articulos.php');
                         exit;
                     case 'registrado':
-                        // Si es un usuario registrado pero no autorizado, muestra un mensaje de error
-                        echo 'Lo siento, no tienes permisos para acceder a esta aplicación.';
+                        // Si es un usuario registrado pero no autorizado, muestra un mensaje de advertencia
+                        echo 'Hola ' . $nombre . ', no tienes permisos para acceder a esta aplicación.';
                         break;
                     default:
-                        // Si el tipo de usuario no es reconocido, muestra un mensaje de error
-                        echo 'Lo siento, el usuario no está registrado.';
+                        // Si el nombre de usuario no está registrado, muestra un mensaje de error
+                        echo 'Lo siento, ' . $nombre . ' no está registrado.';
                         break;
                 }
-            } else {
-                // Si no se encontró un usuario con las credenciales proporcionadas, muestra un mensaje de error
-                echo 'Lo siento, el usuario no está registrado.';
+            }
+            ?>
+            <?php // Mostrar mensaje de bienvenida si se estableció una cookie de tipo de usuario
+            if (isset($_COOKIE['datos'])) {
+                $nombre = $_COOKIE['datos'];
+                switch ($nombre) {
+                    case 'superadmin':
+                        echo '¡Bienvenido, ' . $nombre . '! Haz clic <a href="usuarios.php">aquí</a> para acceder a la página de usuarios.';
+                        break;
+                    case 'autorizado':
+                        echo '¡Bienvenido, ' . $nombre . '! Haz clic <a href="articulos.php">aquí</a> para acceder a la página de artículos.';
+                        break;
+                    case 'registrado':
+                        echo 'Hola ' . $nombre . ', no tienes permisos para acceder a esta aplicación.';
+                        break;
+                }
             }
             ?>
         </div>
     </div>
-<script type="text/javascript" src="./js/script.js"></script>
 </body>
+
 </html>
