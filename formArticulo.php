@@ -6,9 +6,8 @@
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
-    <link rel="stylesheet" href="styles.css">
-    <script src=""></script>
+    <link rel="icon" type="image/x-icon" href="./img/favicon.ico">
+    <link rel="stylesheet" href="">
     <title>Añadir Artículo</title>
 </head>
 <body>
@@ -32,6 +31,7 @@
             }
     }
     ?>
+    <div class="content">
     <form method="post" action="formarticulos.php">
         <p><label>ID: </label><input type="text" value="<?php echo $datosProducto["ProductID"];?>" disable>
         <input type="hidden" name="id" value="<?php echo $datosProducto["ProductID"];?>"></p>
@@ -80,6 +80,8 @@
         }
         ?>
     </form>
+    </div>
     <a href="articulos.php">Volver a la lista de artículos</a>
+    
 </body>
 </html>

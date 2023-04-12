@@ -1,53 +1,34 @@
 <?php
 include "conexion.php";
 
-function tipoUsuario($nombre, $correo)
-{
+function tipoUsuario($nombre, $correo){
     $conexion = crearConexion();
-    $sql = "SELECT Enabled, AdminLevel FROM User WHERE FullName = '$nombre' AND Email = '$correo'";
-    $resultado = mysqli_query($conexion, $sql);
-    if (mysqli_num_rows($resultado) > 0) {
-        $fila = mysqli_fetch_assoc($resultado);
-        if ($fila['Enabled'] == 0) {
-            cerrarConexion($conexion);
-            return "registrado";
-        } elseif ($fila['AdminLevel'] == 1) {
-            cerrarConexion($conexion);
-            return "autorizado";
-        } elseif ($fila['AdminLevel'] == 2) {
-            cerrarConexion($conexion);
-            return "superadmin";
-        }
+    if(esSuperadmin($nombre,$correo)){
+        return "superadmin";
     } else {
+        $query ="SELECT Enabled full_name, email, enabled FROM User WHERE full_name = '$nombre' AND Email = '$correo'";
+        $resultado = mysqli_query($conexion, $query);
         cerrarConexion($conexion);
-        return "no registrado";
+        if($datos =  mysqli_fetch_array($resultado)){
+            if($datos['enabled'] == 0){
+                return "registrado";
+            } else if ($datos['enabled'] == 1){
+                return "autorizado";
+            }else {
+                return "no registrado";
+            }
+        }
     }
 }
-
-
-function esSuperadmin($nombre, $correo)
-{
+function esSuperadmin($nombre, $correo){
     $conexion = crearConexion();
 
     // Buscar al usuario en la tabla User
-    $query = "SELECT * FROM User WHERE FullName = '$nombre' AND Email = '$correo'";
-    $result = mysqli_query($conexion, $query);
-
-    if ($result->num_rows > 0) {
-        // El usuario existe, comprobar si es superadmin
-        $row = $result->fetch_assoc();
-        if ($row['Type'] === 'superadmin') {
-            // Es superadmin
-            cerrarConexion($conexion);
-            return true;
-        } else {
-            // No es superadmin
-            cerrarConexion($conexion);
-            return false;
-        }
+    $query = "SELECT user.id FROM User INNER JOIN setup ON user.id = setup.superadmin_id WHERE user.full_name = '$nombre' AND Email = '$correo'";
+    $resultado = mysqli_query($conexion, $query);
+    if($datos =  mysqli_fetch_array($resultado)){
+        return true;
     } else {
-        // No se encontró el usuario en la base de datos
-        cerrarConexion($conexion);
         return false;
     }
 }
@@ -55,10 +36,10 @@ function esSuperadmin($nombre, $correo)
 function getPermisos()
 {
     $conexion = crearConexion();
-    $consulta = "SELECT Autenticacion FROM setup;";
+    $consulta = "SELECT management FROM setup;";
     $resultado = mysqli_query($conexion, $consulta);
     $fila = mysqli_fetch_assoc($resultado);
-    $autenticacion = $fila['Autenticacion'];
+    $autenticacion = $fila['management'];
     mysqli_free_result($resultado);
     cerrarConexion($conexion);
     return $autenticacion;
@@ -87,10 +68,10 @@ function getCategorias()
 function getListaUsuarios()
 {
     $conexion = crearConexion();
-    $query = "SELECT FullName, Email, Enabled FROM user";
-    $result = mysqli_query($conexion, $query);
+    $query = "SELECT full_name, email, enabled FROM user";
+    $resultado = mysqli_query($conexion, $query);
     cerrarConexion($conexion);
-    return $result;
+    return $resultado;
 }
 
 
