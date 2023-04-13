@@ -1,28 +1,30 @@
 <?php
+require_once "consultas.php";
 // Verificar las credenciales del usuario (debe manejar la verificación de contraseñas de forma segura)
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $usuario = $_POST['usuario'];
     $email = $_POST['email'];
+    $idUsuario = 1; // AQUÃÂ debes usar el ID del usuario que iniciÃÂ³ sesiÃÂ³n
 
-    // verificar las credenciales de usuario aquÃ­
+    $tipoUsuario = tipoUsuario($usuario, $email, $idUsuario);
 
-    if ($es_superadmin) {
+    if ($tipoUsuario == 'superadmin') {
         // redirigir al usuario a la pagina de usuarios
         header("Location: users.php");
         exit;
-    } elseif ($es_autorizado) {
+    } elseif ($tipoUsuario == 'autorizado') {
         // redirigir al usuario a la pagina de articulos
         header("Location: articulos.php");
         exit;
-    } elseif ($es_registrado) {
+    } elseif ($tipoUsuario == 'registrado') {
         // mostrar un mensaje de error indicando que el usuario no tiene permisos suficientes
         http_response_code(403);
         echo "No tienes permisos suficientes para acceder a esta página.";
         exit;
     } else {
-        // mostrar un mensaje de error indicando que las credenciales del usuario son inválidas
+        // mostrar un mensaje de error indicando que las credenciales del usuario son invÃ¡lidas
         http_response_code(401);
-        echo "Las credenciales de usuario no son válidas. Por favor, inténtalo de nuevo.";
+        echo "Las credenciales de usuario no son vÃ¡lidas. Por favor, intÃ©ntalo de nuevo.";
         exit;
     }
 }

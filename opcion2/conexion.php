@@ -1,11 +1,11 @@
 <?php
-function crearConexion($host, $user, $password, $baseDatos, $puerto = null)
+function crearConexion()
 {
     $host = "localhost";
     $user = "root";
-    $password = "maneska";
+    $password = "";
     $baseDatos = "pac_dwes";
-    $conexion = mysqli_connect($host, $user, $password, $baseDatos, $puerto);
+    $conexion = mysqli_connect($host, $user, $password, $baseDatos);
     if (!$conexion) {
         // si la conexión falla, devuelve un error con el cÃÂ³digo de error
         throw new Exception("Error al conectarse a la base de datos: " . mysqli_connect_error());
