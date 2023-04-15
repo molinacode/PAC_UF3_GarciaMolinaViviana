@@ -20,10 +20,10 @@
         ?>
         <h1>Artículos</h1>
         <?php
-        if (getPermisos() == 1) {
-            echo "<a href='formArticulos.php?anadir'>Añadir producto</a>";
-        }
+        /*if (getPermisos() == 1) {
+        }*/
         ?>
+
         <?php
         if (!isset($_COOKIE['datos']) or ($_COOKIE['datos'] != "autorizado")) {
             echo "No tienes permiso para estar aqui.";
@@ -34,6 +34,7 @@
                     $orden = $_GET['orden']; // obtener el orden seleccionado por el usuario
                 }
                 pintaProductos($orden);
+                echo "<a href='formArticulos.php?anadir'>Añadir producto</a>";
         }
         ?>
     <a href="index.php">Volver a la página principal</a>

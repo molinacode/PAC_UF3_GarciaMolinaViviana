@@ -12,7 +12,7 @@
     // Incluir los archivos necesarios
     include "consultas.php";
 
-    if (!getPermisos() == 1) {
+    if (getPermisos() == 0) {
         echo "<p>No tienes permiso para acceder a esta página.</p>";
         echo "<a href='articulos.php'>Volver a la lista de artículos</a>";
         exit();
