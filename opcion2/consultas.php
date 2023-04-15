@@ -1,8 +1,8 @@
 <?php
 include "conexion.php";
-function tipoUsuario($nombre, $correo, $idUsuario){
+function tipoUsuario($nombre, $correo){
     $conexion = crearConexion();
-
+    $idUsuario = isset($_COOKIE["datos"]) ? $_COOKIE["datos"] : 0;
     if (esSuperadmin($conexion, $idUsuario)){
         mysqli_close($conexion);
         return 'superadmin';
@@ -31,16 +31,12 @@ function tipoUsuario($nombre, $correo, $idUsuario){
     }
 }
 function esSuperadmin($conexion, $idUsuario){ 
-    $conexion=crearConexion();
-    $query = "SELECT user.id, setup.superadmin_id FROM user LEFT JOIN setup ON user.id = setup.superadmin_id WHERE user.id = $idUsuario";
+    $query = "SELECT user.id, setup.superadmin_id FROM user INNER JOIN setup ON user.id = setup.superadmin_id WHERE user.id = $idUsuario";
     $result = mysqli_query($conexion, $query);
         if($fila = mysqli_fetch_assoc($result)){
-            return true;
         }else{
             return false;
         }
-    mysqli_close($conexion);
-    return $fila;
     }
 function getPermisos(){
     $conexion = crearConexion();
@@ -109,7 +105,7 @@ function getProductos($orden)
 {
     $conexion = crearConexion();
     // Consultamos los productos ordenados por el valor de $orden
-    $query = "SELECT product.id, product.name, product.cost, product.price, product.category_id as name
+    $query = "SELECT product.id, product.name, product.cost, product.price, product.category_id as category
                 FROM product 
                 INNER JOIN category ON product.category_id = category.id
                 ORDER BY $orden";

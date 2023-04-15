@@ -29,7 +29,7 @@
             echo "No tienes permiso para estar aqui.";
         } else { 
                 if (!isset($_GET['orden'])) {
-                    $orden = "ProductID"; // orden por defecto
+                    $orden = "id"; // orden por defecto
                 } else {
                     $orden = $_GET['orden']; // obtener el orden seleccionado por el usuario
                 }

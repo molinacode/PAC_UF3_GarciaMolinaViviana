@@ -59,7 +59,7 @@
                     }
                     break;
                 case 'Añadir':
-                    if(anadirProducto($_GET['id'],$_GET['nombre'],$_GET['coste'],$_GET['precio'],$_GET['category_id'])){
+                    if(anadirProducto($_GET['nombre'],$_GET['coste'],$_GET['precio'],$_GET['categoria'])){
                         echo "Se ha añadido el producto.";
                     }else{
                         echo "No se ha añadido el producto.";

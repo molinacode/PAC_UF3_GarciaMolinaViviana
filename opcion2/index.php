@@ -4,9 +4,9 @@ include "consultas.php";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $usuario = $_POST['usuario'];
     $email = $_POST['email'];
-    $idUsuario = isset($_COOKIE["idUsuario"]) ? $_COOKIE["idUsuario"] : 0; // Aqui se usa el ID del usuario que inicia sesión
+    $idUsuario = isset($_COOKIE["datos"]) ? $_COOKIE["datos"] : 0; // Aqui se usa el ID del usuario que inicia sesión
 
-    $tipoUsuario = tipoUsuario($usuario, $email, $idUsuario);
+    $tipoUsuario = tipoUsuario($usuario, $email);
     setcookie("datos",$tipoUsuario,time()+500);
 
     switch ($tipoUsuario) {
