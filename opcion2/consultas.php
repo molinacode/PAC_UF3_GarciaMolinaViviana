@@ -52,9 +52,9 @@ function cambiarPermisos(){
     $permisos = getPermisos();
     if ($permisos == 0){
         $query = "UPDATE setup SET management = 1";
-        $resultado = mysqli_fetch_assoc(mysqli_query($conexion,$query));
+        $result = mysqli_fetch_assoc(mysqli_query($conexion,$query));
         cerrarConexion($conexion);
-        return $resultado['management'];
+        return $result['management'];
 
     }else if ($permisos == 1){
         $query = "UPDATE setup SET management = 0";
